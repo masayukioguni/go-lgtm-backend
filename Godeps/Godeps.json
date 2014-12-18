@@ -1,0 +1,15 @@
+{
+	"ImportPath": "github.com/masayukioguni/go-lgtm-backend",
+	"GoVersion": "go1.3.3",
+	"Deps": [
+		{
+			"ImportPath": "github.com/zenazn/goji",
+			"Rev": "119938d4b94fdf713efb3340ebd4ba5f3286f520"
+		},
+		{
+			"ImportPath": "labix.org/v2/mgo",
+			"Comment": "287",
+			"Rev": "gustavo@niemeyer.net-20140501184651-975yyw9ipld92pji"
+		}
+	]
+}
