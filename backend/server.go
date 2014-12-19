@@ -1,10 +1,8 @@
 package backend
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/fukata/golang-stats-api-handler"
-	"github.com/masayukioguni/go-lgtm-model"
 	"github.com/zenazn/goji"
 	"github.com/zenazn/goji/web"
 	"github.com/zenazn/goji/web/middleware"
@@ -16,26 +14,19 @@ import (
 )
 
 type Server struct {
-	Config *Config
-
-	Store              *model.Store
+	Config             *Config
 	Worker             []Worker
 	UploadFileContexts chan *UploadFileContext
 }
 
 type Config struct {
-	MongoHost       string
-	MongoDataBase   string
-	MongoCollection string
-	LogFilePath     string
+	LogFilePath string
 }
 
 func NewServer(Config *Config) *Server {
 	server := &Server{
 		Config: Config,
 	}
-
-	server.Store, _ = model.NewStore(Config.MongoHost, Config.MongoDataBase, Config.MongoCollection)
 
 	return server
 }
@@ -64,12 +55,6 @@ func (server *Server) postImage(c web.C, w http.ResponseWriter, r *http.Request)
 	w.WriteHeader(http.StatusOK)
 }
 
-func (server *Server) list(c web.C, w http.ResponseWriter, r *http.Request) {
-	model, _ := server.Store.All()
-	j, _ := json.Marshal(model)
-	fmt.Fprintf(w, string(j))
-}
-
 func (server *Server) index(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
@@ -86,7 +71,6 @@ func (server *Server) Run() {
 	goji.Use(middleware.NoCache)
 
 	goji.Get("/", server.index)
-	goji.Get("/list", server.list)
 	goji.Get("/stats", stats_api.Handler)
 
 	goji.Post("/images", server.postImage)
@@ -95,9 +79,6 @@ func (server *Server) Run() {
 	server.Worker = make([]Worker, runtime.NumCPU())
 	for _, v := range server.Worker {
 		v.Task = server.UploadFileContexts
-		v.Dial = server.Config.MongoHost
-		v.DBName = server.Config.MongoDataBase
-		v.Collection = server.Config.MongoCollection
 		go v.Run()
 	}
 

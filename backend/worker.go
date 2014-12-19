@@ -5,10 +5,17 @@ import (
 	"github.com/masayukioguni/go-lgtm-model"
 	"github.com/mitchellh/goamz/aws"
 	"github.com/mitchellh/goamz/s3"
+	"github.com/t-k/fluent-logger-golang/fluent"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
+)
+
+const (
+	defaultFluentHost = "127.0.0.1"
+	defaultFluentPort = 24224
+	defaultTagName    = "lgtm.image"
 )
 
 type UploadFileContext struct {
@@ -17,26 +24,7 @@ type UploadFileContext struct {
 }
 
 type Worker struct {
-	Task       chan *UploadFileContext
-	Dial       string
-	DBName     string
-	Collection string
-}
-
-func (w *Worker) Insert(image *model.Image) error {
-	store, err := model.NewStore(w.Dial, w.DBName, w.Collection)
-	defer store.Close()
-
-	if err != nil {
-		return err
-	}
-
-	err = store.Insert(image)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	Task chan *UploadFileContext
 }
 
 func (w *Worker) Upload(name string, context *UploadFileContext) error {
@@ -78,25 +66,30 @@ func (w *Worker) S3Upload(name string, context *UploadFileContext) error {
 }
 
 func (w *Worker) Run() {
+	logger, err := fluent.New(fluent.Config{
+		FluentPort: defaultFluentPort,
+		FluentHost: defaultFluentHost})
+
+	if err != nil {
+		log.Fatalf("w.Upload Failed %s \n", err)
+	}
+
+	defer logger.Close()
+
 	for {
 		select {
 		case job := <-w.Task:
 			name := GetRandomName(filepath.Ext(job.Filename)) + filepath.Ext(job.Filename)
-
-			err := w.Upload(name, job)
-			if err != nil {
-				log.Fatalf("w.Upload Failed %s \n", err)
-			}
 
 			err = w.S3Upload(name, job)
 			if err != nil {
 				log.Fatalf("w.S3Upload Failed %s \n", err)
 			}
 
-			err = w.Insert(&model.Image{Name: name})
-			if err != nil {
-				log.Fatalf("w.Insert Failed %s \n", err)
-			}
+			item := &model.Image{Name: name}
+			log.Printf("%v\n", item)
+
+			logger.Post(defaultTagName, item)
 		}
 	}
 }

@@ -3,6 +3,35 @@
 	"GoVersion": "go1.3.3",
 	"Deps": [
 		{
+			"ImportPath": "github.com/fukata/golang-stats-api-handler",
+			"Rev": "2bf22cc37324d5cc14b87ba6dd618efc6510ed7a"
+		},
+		{
+			"ImportPath": "github.com/masayukioguni/go-lgtm-model",
+			"Rev": "c85a611fd3f9ee7ae01dea7cea80609f8efd2b98"
+		},
+		{
+			"ImportPath": "github.com/mitchellh/goamz/aws",
+			"Rev": "b2b88cfe3619bb45c4df8670f7130dbfbf82b2cc"
+		},
+		{
+			"ImportPath": "github.com/mitchellh/goamz/s3",
+			"Rev": "b2b88cfe3619bb45c4df8670f7130dbfbf82b2cc"
+		},
+		{
+			"ImportPath": "github.com/t-k/fluent-logger-golang/fluent",
+			"Comment": "v0.5.0",
+			"Rev": "98a0e147fa2775bf1ac8139e47c25080d1a4dbcc"
+		},
+		{
+			"ImportPath": "github.com/ugorji/go/codec",
+			"Rev": "e906e395b9d45d3230e800c8ad1f92f99764e753"
+		},
+		{
+			"ImportPath": "github.com/vaughan0/go-ini",
+			"Rev": "a98ad7ee00ec53921f08832bc06ecf7fd600e6a1"
+		},
+		{
 			"ImportPath": "github.com/zenazn/goji",
 			"Rev": "119938d4b94fdf713efb3340ebd4ba5f3286f520"
 		},
