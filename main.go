@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/masayukioguni/go-lgtm-backend/server"
+	"github.com/masayukioguni/go-lgtm-backend/backend"
 )
 
 const (
@@ -11,7 +11,7 @@ const (
 )
 
 func main() {
-	s := server.NewServer(&server.Config{
+	s := backend.NewServer(&backend.Config{
 		MongoHost:       Dial,
 		MongoDataBase:   DB,
 		MongoCollection: Collection,

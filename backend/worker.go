@@ -1,7 +1,8 @@
-package server
+package backend
 
 import (
 	"bytes"
+	"github.com/masayukioguni/go-lgtm-model"
 	"github.com/mitchellh/goamz/aws"
 	"github.com/mitchellh/goamz/s3"
 	"io"
@@ -22,8 +23,8 @@ type Worker struct {
 	Collection string
 }
 
-func (w *Worker) Insert(image *Image) error {
-	store, err := NewStore(w.Dial, w.DBName, w.Collection)
+func (w *Worker) Insert(image *model.Image) error {
+	store, err := model.NewStore(w.Dial, w.DBName, w.Collection)
 	defer store.Close()
 
 	if err != nil {
@@ -92,7 +93,7 @@ func (w *Worker) Run() {
 				log.Fatalf("w.S3Upload Failed %s \n", err)
 			}
 
-			err = w.Insert(&Image{Name: name})
+			err = w.Insert(&model.Image{Name: name})
 			if err != nil {
 				log.Fatalf("w.Insert Failed %s \n", err)
 			}

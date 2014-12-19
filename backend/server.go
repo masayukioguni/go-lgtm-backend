@@ -1,9 +1,10 @@
-package server
+package backend
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/fukata/golang-stats-api-handler"
+	"github.com/masayukioguni/go-lgtm-model"
 	"github.com/zenazn/goji"
 	"github.com/zenazn/goji/web"
 	"github.com/zenazn/goji/web/middleware"
@@ -17,7 +18,7 @@ import (
 type Server struct {
 	Config *Config
 
-	Store              *Store
+	Store              *model.Store
 	Worker             []Worker
 	UploadFileContexts chan *UploadFileContext
 }
@@ -34,7 +35,7 @@ func NewServer(Config *Config) *Server {
 		Config: Config,
 	}
 
-	server.Store, _ = NewStore(Config.MongoHost, Config.MongoDataBase, Config.MongoCollection)
+	server.Store, _ = model.NewStore(Config.MongoHost, Config.MongoDataBase, Config.MongoCollection)
 
 	return server
 }
