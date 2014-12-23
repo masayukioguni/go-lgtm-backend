@@ -7,7 +7,6 @@ import (
 	"github.com/zenazn/goji/web"
 	"github.com/zenazn/goji/web/middleware"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"runtime"
 )
