@@ -7,6 +7,11 @@
 			"Rev": "2bf22cc37324d5cc14b87ba6dd618efc6510ed7a"
 		},
 		{
+			"ImportPath": "github.com/joho/godotenv",
+			"Comment": "v1",
+			"Rev": "a01a834e1654b4c9ca5b3ad05159445cc9c7ad08"
+		},
+		{
 			"ImportPath": "github.com/masayukioguni/go-lgtm-model",
 			"Rev": "c85a611fd3f9ee7ae01dea7cea80609f8efd2b98"
 		},
