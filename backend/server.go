@@ -9,7 +9,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"runtime"
 )
 
@@ -20,7 +19,11 @@ type Server struct {
 }
 
 type Config struct {
-	LogFilePath string
+	LogFilePath   string
+	FluentHost    string
+	FluentPort    int
+	FluentTagName string
+	S3Bucket      string
 }
 
 func NewServer(Config *Config) *Server {
@@ -32,7 +35,6 @@ func NewServer(Config *Config) *Server {
 }
 
 func (server *Server) postImage(c web.C, w http.ResponseWriter, r *http.Request) {
-
 	file, header, err := r.FormFile("image")
 	defer file.Close()
 	if err != nil {
@@ -61,11 +63,6 @@ func (server *Server) index(w http.ResponseWriter, r *http.Request) {
 }
 
 func (server *Server) Run() {
-
-	f, _ := os.OpenFile(server.Config.LogFilePath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	defer f.Close()
-
-	log.SetOutput(f)
 
 	goji.Use(middleware.Recoverer)
 	goji.Use(middleware.NoCache)

@@ -29,4 +29,5 @@ main
 build
 Godeps/Readme
 Godeps/_workspace
-log
+.env
+go-lgtm-backend.log
