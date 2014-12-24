@@ -13,7 +13,7 @@
 		},
 		{
 			"ImportPath": "github.com/masayukioguni/go-lgtm-model",
-			"Rev": "c85a611fd3f9ee7ae01dea7cea80609f8efd2b98"
+			"Rev": "9ac11589c84e5edd9576951b02a68d7e69287563"
 		},
 		{
 			"ImportPath": "github.com/mitchellh/goamz/aws",
