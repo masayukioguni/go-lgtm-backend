@@ -79,7 +79,7 @@ func (w *Worker) Run() {
 	for {
 		select {
 		case job := <-w.Task:
-			name := GetRandomName(filepath.Ext(job.Filename)) + filepath.Ext(job.Filename)
+			name := GetRandomName(job.Filename) + filepath.Ext(job.Filename)
 
 			err = w.S3Upload(name, job)
 			if err != nil {
