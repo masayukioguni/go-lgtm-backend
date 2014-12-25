@@ -61,15 +61,18 @@ func (server *Server) index(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
+func (server *Server) Prepare(m *web.Mux) {
+	m.Get("/", server.index)
+	m.Get("/stats", stats_api.Handler)
+	m.Post("/images", server.postImage)
+}
+
 func (server *Server) Run() {
+
+	server.Prepare(goji.DefaultMux)
 
 	goji.Use(middleware.Recoverer)
 	goji.Use(middleware.NoCache)
-
-	goji.Get("/", server.index)
-	goji.Get("/stats", stats_api.Handler)
-
-	goji.Post("/images", server.postImage)
 
 	server.UploadFileContexts = make(chan *UploadFileContext, runtime.NumCPU())
 	server.Worker = make([]Worker, runtime.NumCPU())
